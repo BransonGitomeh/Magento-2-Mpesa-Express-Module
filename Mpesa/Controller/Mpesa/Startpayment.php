@@ -24,6 +24,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
         $this->_mpesa = $mpesa;
         $this->cart = $cart;
         $this->_mpesahelper = $mpesahelper;
+        $this->_logger = $logger;
         parent::__construct($context);
     }
 
@@ -32,6 +33,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
     {
         $phone = $this->getRequest()->getParam('phone');
        // $phone = '254720108418';
+       $this->_logger->debug('********************************* test debug log');
 
         $token = $this->_mpesahelper->generateToken();
         $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
