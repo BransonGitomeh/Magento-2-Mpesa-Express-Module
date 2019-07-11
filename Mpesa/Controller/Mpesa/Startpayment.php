@@ -78,6 +78,8 @@ class Startpayment extends \Magento\Framework\App\Action\Action
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
 
+        print($curl);
+
         $curl_response = curl_exec($curl);
 
         $json = json_decode($curl_response,true);
