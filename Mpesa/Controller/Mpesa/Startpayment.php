@@ -24,7 +24,6 @@ class Startpayment extends \Magento\Framework\App\Action\Action
         $this->_mpesa = $mpesa;
         $this->cart = $cart;
         $this->_mpesahelper = $mpesahelper;
-        $this->_logger = $logger;
         parent::__construct($context);
     }
 
