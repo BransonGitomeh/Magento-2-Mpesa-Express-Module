@@ -32,7 +32,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
     {
         $phone = $this->getRequest()->getParam('phone');
        // $phone = '254720108418';
-        if(preg_match("/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/", $phone)) {
+        if(preg_match("/(\+?254|0|^){1}[-. ]?[7]{1}([0-2]{1}[0-9]{1}|[9]{1}[0-2]{1})[0-9]{6}\z/", $phone)) {
             // $phone is valid
             $token = $this->_mpesahelper->generateToken();
             $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
