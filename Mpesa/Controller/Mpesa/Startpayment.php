@@ -17,8 +17,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
         \Safaricom\Mpesa\Model\Mpesac2b $mpesa,
         \Magento\Checkout\Model\Cart $cart,
         \Safaricom\Mpesa\Helper\Data $mpesahelper,
-        \Safaricom\Mpesa\Model\Stkpush $stkpush,
-        \Psr\Log\LoggerInterface $logger
+        \Safaricom\Mpesa\Model\Stkpush $stkpush
     )
     {
         $this->_stkpush = $stkpush;
@@ -36,10 +35,6 @@ class Startpayment extends \Magento\Framework\App\Action\Action
        // $phone = '254720108418';
         if(preg_match("/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/", $phone)) {
             // $phone is valid
-        
-
-            $this->_logger->debug('********************************* test debug log');
-
             $token = $this->_mpesahelper->generateToken();
             $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
@@ -84,9 +79,6 @@ class Startpayment extends \Magento\Framework\App\Action\Action
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
-
-            print($curl);
-
             $curl_response = curl_exec($curl);
 
             $json = json_decode($curl_response,true);
