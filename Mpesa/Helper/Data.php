@@ -20,8 +20,6 @@ class Data extends AbstractHelper
 
     const XML_PATH_SAFARICOM_MPESA = 'payment/mpesac2b/';
 
-
-
     public function __construct(Context $context,
                                 ObjectManagerInterface $objectManager,
                                 StoreManagerInterface $storeManager
@@ -37,7 +35,6 @@ class Data extends AbstractHelper
             $field, ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-
 
     public function getGeneralConfig($code, $storeId = null)
     {
