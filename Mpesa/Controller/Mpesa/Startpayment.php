@@ -35,9 +35,11 @@ class Startpayment extends \Magento\Framework\App\Action\Action
         if(preg_match("/(\+?254|0|^){1}[-. ]?[7]{1}([0-2]{1}[0-9]{1}|[9]{1}[0-2]{1})[0-9]{6}\z/", $phone)) {
             // $phone is valid
             $token = $this->_mpesahelper->generateToken();
+            
             // $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+            $url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
 
-            $url = $this->_mpesahelper->getGeneralConfig('mpesa_request_url');
+            // $url = $this->_mpesahelper->getGeneralConfig('mpesa_request_url');
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$token)); //setting custom header
