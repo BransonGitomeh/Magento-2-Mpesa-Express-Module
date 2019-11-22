@@ -41,9 +41,9 @@ public function execute()
        if(preg_match("/(\+?254|0|^){1}[-. ]?[7]{1}([0-2]{1}[0-9]{1}|[9]{1}[0-2]{1})[0-9]{6}\z/", $phone)) {
         $token = $this->_mpesahelper->generateToken();
         $live  = $this->_mpesahelper->getGeneralConfig('live_or_dev');
-        // $url   = ($live == 'Yes' ? 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest' : 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest');
+        $url   = ($live == 'Yes' ? 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest' : 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest');
 
-        $url   = $this->_mpesahelper->getGeneralConfig('mpesa_request_url');
+        // $url   = $this->_mpesahelper->getGeneralConfig('mpesa_request_url');
         $curl  = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$token)); //setting custom header
@@ -90,15 +90,15 @@ public function execute()
         $json = json_decode($curl_response,true);
         if(isset($json['errorCode']))
         {
-            echo json_encode(['success'=>false,'message'=>$json['errorMessage']]);
+            echo json_encode(['success'=>false,url=>$url,'message'=>$json['errorMessage'],live=>$live]);
         }
         elseif(isset($json['ResponseCode'])){
             //return json_encode(['success'=>true,'message'=>$json['ResponseDescription']]);
             $this->_stkpush->setData(['account_id'=>$account_id,'merchant_request_id'=>$json['MerchantRequestID'],'checkout_request_id'=>$json['CheckoutRequestID'],'phone'=>$phone,'customer_id'=>$customerId])->save();
-            echo json_encode(['success'=>true,'message'=>$json['CustomerMessage'],'m_id'=>$json['MerchantRequestID'],'c_id' =>$json['CheckoutRequestID']]);
+            echo json_encode([live=>$live,url=>$url,'success'=>true,'message'=>$json['CustomerMessage'],'m_id'=>$json['MerchantRequestID'],'c_id' =>$json['CheckoutRequestID']]);
         }
     } else {
-        echo json_encode(['success'=>false,'message'=>"Phone number is not a safaricom number"]);
+        echo json_encode([live=>$live,url=>$url,'success'=>false,'message'=>"Phone number is not a safaricom number"]);
     }
 }
 }
