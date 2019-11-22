@@ -9,6 +9,8 @@ Features
 
 Setup:
 ```
-$ cd /var/www/html/magento/app/code && git clone https://github.com/BransonGitomeh/Magento-2-Mpesa-Plugin.git Safaricom
-$ cd /var/www/html/magento && php bin/magento setup:upgrade && php bin/magento setup:static-content:deploy
+$ cd /var/www/html/magento/app/code
+$ git clone https://github.com/BransonGitomeh/Magento-2-Mpesa-Plugin.git Safaricom
+$ cd /var/www/html/magento 
+$ php bin/magento setup:upgrade && php bin/magento setup:static-content:deploy
 ```
