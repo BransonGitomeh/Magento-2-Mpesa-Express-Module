@@ -100,4 +100,5 @@ public function execute()
     } else {
         echo json_encode(['success'=>false,'message'=>"Phone number is not a safaricom number"]);
     }
-    }
+}
+}
