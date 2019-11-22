@@ -19,7 +19,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
         \Safaricom\Mpesa\Model\Mpesac2b $mpesa,
         \Magento\Checkout\Model\Cart $cart,
         \Safaricom\Mpesa\Helper\Data $mpesahelper,
-        \Safaricom\Mpesa\Model\Stkpush $stkpush,
+        \Safaricom\Mpesa\Model\Stkpush $stkpush
         // array $data = []
     ) {
         $this->_stkpush = $stkpush;
