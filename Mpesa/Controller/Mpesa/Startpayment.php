@@ -14,16 +14,19 @@ class Startpayment extends \Magento\Framework\App\Action\Action
 
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
+        \Psr\Log\LoggerInterface $logger,
         \Safaricom\Mpesa\Model\Mpesac2b $mpesa,
         \Magento\Checkout\Model\Cart $cart,
         \Safaricom\Mpesa\Helper\Data $mpesahelper,
-        \Safaricom\Mpesa\Model\Stkpush $stkpush
+        \Safaricom\Mpesa\Model\Stkpush $stkpush,
+        array $data = []
     )
     {
         $this->_stkpush = $stkpush;
         $this->_mpesa = $mpesa;
         $this->cart = $cart;
         $this->_mpesahelper = $mpesahelper;
+        $this->_logger = $logger;
         parent::__construct($context);
     }
 
@@ -31,6 +34,9 @@ class Startpayment extends \Magento\Framework\App\Action\Action
 public function execute()
     {
         $phone = $this->getRequest()->getParam('phone');
+
+        $this->_logger->debug('debug1234'); 
+        
        // $phone = '254720108418';
        if(preg_match("/(\+?254|0|^){1}[-. ]?[7]{1}([0-2]{1}[0-9]{1}|[9]{1}[0-2]{1})[0-9]{6}\z/", $phone)) {
         $token = $this->_mpesahelper->generateToken();
