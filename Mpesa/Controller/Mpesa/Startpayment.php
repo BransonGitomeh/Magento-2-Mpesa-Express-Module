@@ -99,9 +99,9 @@ class Startpayment extends \Magento\Framework\App\Action\Action
             if (isset($json['errorCode'])) {
                 echo json_encode([
                     'success' => false,
-                    url => $url,
+                    'url' => $url,
                     'message' => $json['errorMessage'],
-                    live => $live
+                    'live' => $live
                 ]);
             } elseif (isset($json['ResponseCode'])) {
                 //return json_encode(['success'=>true,'message'=>$json['ResponseDescription']]);
@@ -114,8 +114,8 @@ class Startpayment extends \Magento\Framework\App\Action\Action
                 ])->save();
 
                 echo json_encode([
-                    live => $live,
-                    url => $url,
+                    'live' => $live,
+                    'url' => $url,
                     'success' => true,
                     'message' => $json['CustomerMessage'],
                     'm_id' => $json['MerchantRequestID'],
@@ -124,8 +124,8 @@ class Startpayment extends \Magento\Framework\App\Action\Action
             }
         } else {
             echo json_encode([
-                live => $live,
-                url => $url,
+                'live' => $live,
+                'url' => $url,
                 'success' => false,
                 'message' => "Phone number is not a safaricom number"
             ]);
