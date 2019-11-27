@@ -29,13 +29,15 @@ define(
                     data: {phone:$('#safaricom_phone').val(), orderTotal: (totals ? totals : quote)['grand_total'] },
                     type:"POST",
                     beforeSend: function(){
-                        $('.paybill-preload').show();
+                        $('.loader').show();
                         $('#safaricom_phone').attr('disabled','disabled');
+                        $('#paybillButton').attr('disabled','disabled');
+                        
                     },
                     success:function(msg){
                         console.log(msg);
                         var obj = JSON.parse(msg);
-                        $('.paybill-preload').show();
+                        $('.loader').show();
 
                         switch(obj.success)
                         {
@@ -54,6 +56,7 @@ define(
                                             console.log(msg);
 
                                             $('.return-message-paybill').removeClass('pay_false').addClass('pay_true').html(objn.message);
+                                            
                                             if(objn.success == true)
                                             {
                                                 if(objn.code == 'O'){
@@ -61,7 +64,8 @@ define(
                                                 }
                                                 else {
                                                     $('#safaricom_phone').removeAttr('disabled');
-                                                    $('.paybill-preload').hide();
+                                                    $('#paybillButton').removeAttr('disabled');
+                                                    $('.loader').hide();
                                                 }
                                                 clearInterval(myVar);
                                             }
@@ -70,22 +74,21 @@ define(
                                         }
                                     });
                                 }, 3000);
-
-
-
                                 break;
 
                             case false:
-                                $('.return-message-paybill').removeClass('pay_true').addClass('pay_'+obj.success).html(obj.message);
+                                $('.return-message-paybill').removeClass('pay_true').addClass('pay_false').html(obj.message);
                                 $('#safaricom_phone').removeAttr('disabled');
-                                $('.paybill-preload').hide();
+                                $('#paybillButton').removeAttr('disabled');
+                                $('.loader').hide();
                                 return false;
                                 break;
 
                             default:
                                 $('.return-message-paybill').removeClass('pay_true').addClass('pay_false').html('An error ocurred');
                                 $('#safaricom_phone').removeAttr('disabled');
-                                $('.paybill-preload').hide();
+                                $('#paybillButton').removeAttr('disabled');
+                                $('.loader').hide();
                                 return false;
                         }
 
@@ -96,7 +99,7 @@ define(
                     //}
                     ,
                     complete: function() {
-                       // $('.paybill-preload').hide();
+                       // $('.loader').hide();
                     }
                 });
 

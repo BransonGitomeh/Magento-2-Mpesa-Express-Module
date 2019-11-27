@@ -65,7 +65,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                 case (0):
 
                     $code    = $record->getResultCode();
-                    $message = 'Payment was completed successfull. Thank you';
+                    $message = 'Payment was completed successfully. Thank you';
                     $success = true;
                     //construct the response
                     $response = json_encode([
