@@ -28,7 +28,8 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         \Magento\Checkout\Model\Session $checkoutSession,
         \Safaricom\Mpesa\Helper\Data $mpesadata,
         Mpesac2bFactory $mpesaFactory
-    ) {
+    )
+    {
         $this->_resultPageFactory = $resultPageFactory;
         $this->_mpesa = $mpesa;
         $this->cart = $cart;
@@ -42,11 +43,11 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
 
     public function execute()
     {
-        $amount  = $this->cart->getQuote()->getGrandTotal();
-        $ref     = $this->cart->getQuote()->getId();
+        $amount = $this->cart->getQuote()->getGrandTotal();
+        $ref = $this->cart->getQuote()->getId();
 
-        $m_id    = $this->getRequest()->getParam('m_id');
-        $c_id    = $this->getRequest()->getParam('c_id');
+        $m_id = $this->getRequest()->getParam('m_id');
+        $c_id = $this->getRequest()->getParam('c_id');
 
         //As we wait for the CallBack Response we Send a default value
         //$code    = null;
