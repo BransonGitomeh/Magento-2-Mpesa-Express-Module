@@ -85,7 +85,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             //Balance Insufficient
             $code    = $record->getResultCode();
             $message = 'MPESA Balance is not Enough to Pay KES '. $amount;
-            $success = true;
+            $success = false;
             //construct the response
             $response = json_encode([
             
@@ -106,7 +106,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             //Invalid PIN
             $code    = $record->getResultCode();
             $message = 'MPESA PIN Entered is Invalid';
-            $success = true;
+            $success = false;
             //construct the response
             $response = json_encode([
             
@@ -126,7 +126,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             //Timeout
             $code    = $record->getResultCode();
             $message = 'Timeout Occured. Please Retry Transaction Again';
-            $success = true;
+            $success = false;
             //construct the response
             $response = json_encode([
             
@@ -148,7 +148,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
 
             $code    = $record->getResultCode();
             $message = 'User Cancelled the Request to Pay';
-            $success = true;
+            $success = false;
             //construct the response
             $response = json_encode([
             
@@ -168,7 +168,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             //MPESA operator doesnt exist..
             $code    = $record->getResultCode();
             $message = 'MPESA Operator Doesnt Exist';
-            $success = true;
+            $success = false;
             //construct the response
             $response = json_encode([
             
@@ -188,7 +188,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                 //MPESA operator doesnt exist..
             $code    = $record->getResultCode();
             $message = $record->getResultDesc();
-            $success = true;
+            $success = false;
             //construct the response
             $response = json_encode([
             
