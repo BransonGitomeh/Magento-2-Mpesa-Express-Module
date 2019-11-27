@@ -30,11 +30,11 @@ class Startpayment extends \Magento\Framework\App\Action\Action
 
     public function execute()
     {
-        // $phone = $this->getRequest()->getParam('phone');
-        $phone = '254720108418';
+        $phone = $this->getRequest()->getParam('phone');
+        // $phone = '254720108418';
 
         try {
-            preg_match('(?:254|\+254|0)?(7(?:(?:[12][0-9])|(?:0[0-8])|(9[0-2]))[0-9]{6})$', $phone);
+            preg_match('/^(?:254|\+254|0)?(7(?:(?:[12][0-9])|(?:0[0-8])|(9[0-2]))[0-9]{6})$/', $phone);
         } catch (Exception $e) {
             echo json_encode([
                 'success' => false,
