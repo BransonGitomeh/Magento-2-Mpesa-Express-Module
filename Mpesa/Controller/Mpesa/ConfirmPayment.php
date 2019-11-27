@@ -186,15 +186,17 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                     ]);
                     break;
             }
+        } else {
+            $response = json_encode(
+                [
+                    'success'   => false,
+                    'code'     => null,
+                    'message' => 'Waiting for Transaction Response. Please Wait....'
+                ]
+            );
         }
 
-        $response = json_encode(
-            [
-                'success'   => false,
-                'code'     => null,
-                'message' => 'Waiting for Transaction Response. Please Wait....'
-            ]
-        );
+        
 
         $record->setStatus(1);
         $record->save();
