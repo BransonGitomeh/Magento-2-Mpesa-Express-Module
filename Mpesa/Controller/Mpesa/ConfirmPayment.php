@@ -76,7 +76,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         //     $success = true;
         // }
         echo json_encode([
-            'record' => $record,
+            // 'record' => $record,
             'm_id' => $m_id,
             'c_id' => $c_id,
             'ref' => $ref,
