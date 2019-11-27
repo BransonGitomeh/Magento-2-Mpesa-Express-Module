@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: user
@@ -27,8 +28,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         \Magento\Checkout\Model\Session $checkoutSession,
         \Safaricom\Mpesa\Helper\Data $mpesadata,
         Mpesac2bFactory $mpesaFactory
-    )
-    {
+    ) {
         $this->_resultPageFactory = $resultPageFactory;
         $this->_mpesa = $mpesa;
         $this->cart = $cart;
@@ -50,7 +50,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         $code = null;
         $success = false;
         $message = 'Waiting for transaction';
-/*
+        /*
         $collection = $this->_stkpush->getCollection()->addFieldToFilter('merchant_request_id',['eq'=>$m_id])
             ->addFieldToFilter('checkout_request_id',['eq'=>$c_id])
             ->addFieldToFilter('result_desc',['neq' => 'NULL']);
@@ -67,16 +67,23 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             }
         }
 */
-        $record = $this->_stkpush->load($m_id,'merchant_request_id');
-        if(!empty($record->getResultDesc()))
-        {
-            $record->getResultCode() ==0 ? $code = 'O' : $code = $record->getResultCode();
-            !empty ($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message= 'Waiting for transaction';
+        $record = $this->_stkpush->load($m_id, 'merchant_request_id');
+        if (!empty($record->getResultDesc())) {
+            $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
+            !empty($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message = 'Waiting for transaction';
             $record->setStatus(1);
             $record->save();
             $success = true;
         }
-        echo json_encode(['record'=>$record, 'success'=>$success,'message'=>$message,'code'=>$code]);
-
+        echo json_encode([
+            'record' => $record,
+            'm_id' => $m_id,
+            'c_id' => $c_id,
+            'ref' => $ref,
+            'amount' => $amount,
+            'success' => $success,
+            'message' => $message,
+            'code' => $code
+        ]);
     }
 }
