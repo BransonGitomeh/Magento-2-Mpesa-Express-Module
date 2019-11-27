@@ -41,13 +41,7 @@ class Stkpushlistener extends \Magento\Framework\App\Action\Action implements Ht
         $MerchantRequestID = $data["Body"]["stkCallback"]["MerchantRequestID"];
         $CheckoutRequestID = $data["Body"]["stkCallback"]["CheckoutRequestID"];
 
-        echo json_encode([
-            'data' => $data,
-            'success' => true,
-            'ResultCode' => $ResultCode,
-            'MerchantRequestID' => $MerchantRequestID,
-            'CheckoutRequestID' => $CheckoutRequestID
-        ]);
+        
         /*
         $collection = $this->_stkpush->getCollection()->addFieldToFilter('merchant_request_id',['eq'=>$MerchantRequestID])
             ->addFieldToFilter('checkout_request_id',['eq'=>$CheckoutRequestID]);
@@ -90,6 +84,21 @@ class Stkpushlistener extends \Magento\Framework\App\Action\Action implements Ht
                 $this->_mpesa->setData($data)->save();
             }
 
+            echo json_encode([
+                'data' => $data,
+                'success' => true,
+                'ResultCode' => $ResultCode,
+                'MerchantRequestID' => $MerchantRequestID,
+                'CheckoutRequestID' => $CheckoutRequestID
+            ]);
+        } else {
+            echo json_encode([
+                'data' => $data,
+                'success' => false,
+                'ResultCode' => $ResultCode,
+                'MerchantRequestID' => $MerchantRequestID,
+                'CheckoutRequestID' => $CheckoutRequestID
+            ]);
         }
     }
 
