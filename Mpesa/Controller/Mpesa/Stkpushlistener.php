@@ -40,6 +40,14 @@ class Stkpushlistener extends \Magento\Framework\App\Action\Action implements Ht
         $ResultDesc = $data["Body"]["stkCallback"]["ResultDesc"];
         $MerchantRequestID = $data["Body"]["stkCallback"]["MerchantRequestID"];
         $CheckoutRequestID = $data["Body"]["stkCallback"]["CheckoutRequestID"];
+
+        echo json_encode([
+            'data' => $data,
+            'success' => true,
+            'ResultCode' => $ResultCode,
+            'MerchantRequestID' => $MerchantRequestID,
+            'CheckoutRequestID' => $CheckoutRequestID
+        ]);
         /*
         $collection = $this->_stkpush->getCollection()->addFieldToFilter('merchant_request_id',['eq'=>$MerchantRequestID])
             ->addFieldToFilter('checkout_request_id',['eq'=>$CheckoutRequestID]);
