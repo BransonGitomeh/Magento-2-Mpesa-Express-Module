@@ -65,7 +65,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                 case (0):
 
                     $code    = $record->getResultCode();
-                    $message = $record->getResultDesc();
+                    $message = 'Payment was completed successfull. Thank you';
                     $success = true;
                     //construct the response
                     $response = json_encode([
@@ -81,12 +81,10 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                     break;
 
                 case (1):
-
-                    //Balance Insufficient
                     $code    = $record->getResultCode();
-                    $message = 'MPESA Balance is not Enough to Pay KES ' . $amount;
+                    $message = 'Your Mpesa balance is not enough to Pay KES ' . $amount;
                     $success = false;
-                    //construct the response
+        
                     $response = json_encode([
                         'success'        => $success,
                         'code' => $code,
@@ -99,12 +97,10 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                     break;
 
                 case (2001):
-
-                    //Invalid PIN
                     $code    = $record->getResultCode();
-                    $message = 'MPESA PIN Entered is Invalid';
+                    $message = 'You entered a wrong Mpesa PIN, please try place the order again';
                     $success = false;
-                    //construct the response
+                    
                     $response = json_encode([
                         'success'        => $success,
                         'code' => $code,
@@ -117,11 +113,10 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                     break;
 
                 case (1037):
-                    //Timeout
                     $code    = $record->getResultCode();
-                    $message = 'Timeout Occured. Please Retry Transaction Again';
+                    $message = 'Timeout Occured. Please Retry Again';
                     $success = false;
-                    //construct the response
+   
                     $response = json_encode([
                         'success'        => $success,
                         'code' => $code,
@@ -135,12 +130,10 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                     break;
 
                 case (1032):
-                    //User Cancelled Request
-
                     $code    = $record->getResultCode();
-                    $message = 'User Cancelled the Request to Pay';
+                    $message = 'You cancelled the payment on device, Please retry';
                     $success = false;
-                    //construct the response
+                
                     $response = json_encode([
                         'success'        => $success,
                         'code' => $code,
@@ -157,7 +150,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                     $code    = $record->getResultCode();
                     $message = 'MPESA Operator Doesnt Exist';
                     $success = false;
-                    //construct the response
+
                     $response = json_encode([
                         'success'        => $success,
                         'code' => $code,
@@ -170,11 +163,10 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                     break;
 
                 default:
-                    //MPESA operator doesnt exist..
                     $code    = $record->getResultCode();
                     $message = $record->getResultDesc();
                     $success = false;
-                    //construct the response
+
                     $response = json_encode([
                         'success'        => $success,
                         'code'           => $code,
