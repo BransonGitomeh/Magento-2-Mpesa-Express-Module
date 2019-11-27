@@ -28,7 +28,8 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         \Magento\Checkout\Model\Session $checkoutSession,
         \Safaricom\Mpesa\Helper\Data $mpesadata,
         Mpesac2bFactory $mpesaFactory
-    ) {
+    )
+    {
         $this->_resultPageFactory = $resultPageFactory;
         $this->_mpesa = $mpesa;
         $this->cart = $cart;
@@ -42,182 +43,184 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
 
     public function execute()
     {
-        $amount  = $this->cart->getQuote()->getGrandTotal();
-        $ref     = $this->cart->getQuote()->getId();
+        $amount = $this->cart->getQuote()->getGrandTotal();
+        $ref = $this->cart->getQuote()->getId();
 
-        $m_id    = $this->getRequest()->getParam('m_id');
-        $c_id    = $this->getRequest()->getParam('c_id');
+        $m_id = $this->getRequest()->getParam('m_id');
+        $c_id = $this->getRequest()->getParam('c_id');
 
         //As we wait for the CallBack Response we Send a default value
         //$code    = null;
         //$success = false;
         //$message = 'Waiting for Transaction Response. Please Wait....';
-        
+
         //Fetch the record from the stk table using the merchant_request_id
-        
-        $record  = $this->_stkpush->load($m_id, 'merchant_request_id');
-        
-        if(!empty($record->getResultDesc()){
-            
-          switch($record->getResultCode()){
 
-            case(0):
+        $record = $this->_stkpush->load($m_id, 'merchant_request_id');
 
-            $code    = $record->getResultCode();
-            $message = $record->getResultDesc();
-            $success = true;
-            //construct the response
-            $response = json_encode([
-            
-            'success'        => $success,
-            'code' => $code,
-            'message'        => $message,
-            'm_id'           => $m_id,
-            'c_id'           => $c_id,
-            'ref'            => $ref,
-            'amount'         => $amount
+        if (!empty($record->getResultDesc())) {
+
+            switch ($record->getResultCode()) {
+
+                case(0):
+
+                    $code = $record->getResultCode();
+                    $message = $record->getResultDesc();
+                    $success = true;
+                    //construct the response
+                    $response = json_encode(['success' => $success,
+                        'code' => $code,
+                        'message' => $message,
+                        'm_id' => $m_id,
+                        'c_id' => $c_id,
+                        'ref' => $ref,
+                        'amount' => $amount
 
 
-             ]); 
+                    ]);
 
-            break;
+                    break;
 
-            case(1):
+                case(1):
 
-            //Balance Insufficient
-            $code    = $record->getResultCode();
-            $message = 'MPESA Balance is not Enough to Pay KES '. $amount;
-            $success = false;
-            //construct the response
-            $response = json_encode([
-            
-            'success'        => $success,
-            'code' => $code,
-            'message'        => $message,
-            'm_id'           => $m_id,
-            'c_id'           => $c_id,
-            'ref'            => $ref,
-            'amount'         => $amount
+                    //Balance Insufficient
+                    $code = $record->getResultCode();
+                    $message = 'MPESA Balance is not Enough to Pay KES ' . $amount;
+                    $success = false;
+                    //construct the response
+                    $response = json_encode([
 
-
-             ]); 
-            break;
-
-            case(2001):
-
-            //Invalid PIN
-            $code    = $record->getResultCode();
-            $message = 'MPESA PIN Entered is Invalid';
-            $success = false;
-            //construct the response
-            $response = json_encode([
-            
-            'success'        => $success,
-            'code' => $code,
-            'message'    => $message,
-            'm_id'           => $m_id,
-            'c_id'           => $c_id,
-            'ref'            => $ref,
-            'amount'         => $amount
+                        'success' => $success,
+                        'code' => $code,
+                        'message' => $message,
+                        'm_id' => $m_id,
+                        'c_id' => $c_id,
+                        'ref' => $ref,
+                        'amount' => $amount
 
 
-             ]);
-            break;
+                    ]);
+                    break;
 
-            case(1037):
-            //Timeout
-            $code    = $record->getResultCode();
-            $message = 'Timeout Occured. Please Retry Transaction Again';
-            $success = false;
-            //construct the response
-            $response = json_encode([
-            
-            'success'        => $success,
-            'code' => $code,
-            'message'    => $message,
-            'm_id'           => $m_id,
-            'c_id'           => $c_id,
-            'ref'            => $ref,
-            'amount'         => $amount
+                case(2001):
 
+                    //Invalid PIN
+                    $code = $record->getResultCode();
+                    $message = 'MPESA PIN Entered is Invalid';
+                    $success = false;
+                    //construct the response
+                    $response = json_encode([
 
-             ]);
-
-            break;
-
-            case(1032):
-            //User Cancelled Request
-
-            $code    = $record->getResultCode();
-            $message = 'User Cancelled the Request to Pay';
-            $success = false;
-            //construct the response
-            $response = json_encode([
-            
-            'success'        => $success,
-            'code' => $code,
-            'message'    => $message,
-            'm_id'           => $m_id,
-            'c_id'           => $c_id,
-            'ref'            => $ref,
-            'amount'         => $amount
+                        'success' => $success,
+                        'code' => $code,
+                        'message' => $message,
+                        'm_id' => $m_id,
+                        'c_id' => $c_id,
+                        'ref' => $ref,
+                        'amount' => $amount
 
 
-             ]);
-            break;
+                    ]);
+                    break;
 
-            case('SFC_IC0003'):
-            //MPESA operator doesnt exist..
-            $code    = $record->getResultCode();
-            $message = 'MPESA Operator Doesnt Exist';
-            $success = false;
-            //construct the response
-            $response = json_encode([
-            
-            'success'        => $success,
-            'code' => $code,
-            'message'    => $message,
-            'm_id'           => $m_id,
-            'c_id'           => $c_id,
-            'ref'            => $ref,
-            'amount'         => $amount
+                case(1037):
+                    //Timeout
+                    $code = $record->getResultCode();
+                    $message = 'Timeout Occured. Please Retry Transaction Again';
+                    $success = false;
+                    //construct the response
+                    $response = json_encode([
 
-
-             ]);
-            break;
-                
-            default:
-                //MPESA operator doesnt exist..
-            $code    = $record->getResultCode();
-            $message = $record->getResultDesc();
-            $success = false;
-            //construct the response
-            $response = json_encode([
-            
-            'success'        => $success,
-            'code'           => $code,
-            'message'        => $message,
-            'm_id'           => $m_id,
-            'c_id'           => $c_id,
-            'ref'            => $ref,
-            'amount'         => $amount
+                        'success' => $success,
+                        'code' => $code,
+                        'message' => $message,
+                        'm_id' => $m_id,
+                        'c_id' => $c_id,
+                        'ref' => $ref,
+                        'amount' => $amount
 
 
-             ]);
-           break;
-          }
-         
-        }
+                    ]);
+
+                    break;
+
+                case(1032):
+                    //User Cancelled Request
+
+                    $code = $record->getResultCode();
+                    $message = 'User Cancelled the Request to Pay';
+                    $success = false;
+                    //construct the response
+                    $response = json_encode([
+
+                        'success' => $success,
+                        'code' => $code,
+                        'message' => $message,
+                        'm_id' => $m_id,
+                        'c_id' => $c_id,
+                        'ref' => $ref,
+                        'amount' => $amount
+
+
+                    ]);
+                    break;
+
+                case('SFC_IC0003'):
+                    //MPESA operator doesnt exist..
+                    $code = $record->getResultCode();
+                    $message = 'MPESA Operator Doesnt Exist';
+                    $success = false;
+                    //construct the response
+                    $response = json_encode([
+
+                        'success' => $success,
+                        'code' => $code,
+                        'message' => $message,
+                        'm_id' => $m_id,
+                        'c_id' => $c_id,
+                        'ref' => $ref,
+                        'amount' => $amount
+
+
+                    ]);
+                    break;
+
+                default:
+                    //MPESA operator doesnt exist..
+                    $code = $record->getResultCode();
+                    $message = $record->getResultDesc();
+                    $success = false;
+                    //construct the response
+                    $response = json_encode([
+
+                        'success' => $success,
+                        'code' => $code,
+                        'message' => $message,
+                        'm_id' => $m_id,
+                        'c_id' => $c_id,
+                        'ref' => $ref,
+                        'amount' => $amount
+
+
+                    ]);
+                    break;
+            }
+
+        } else {
+
             $response = json_encode(
                 [
-                 'success'   => false,
-                  'code'     => null,
-                   'message' => 'Waiting for Transaction Response. Please Wait....'
+                    'success' => false,
+                    'code' => null,
+                    'message' => 'Waiting for Transaction Response. Please Wait....'
                 ]);
- 
+
             $record->setStatus(1);
             $record->save();
 
 
-      echo $response;
-}
+        }
+
+
+        echo $response;
+    }
