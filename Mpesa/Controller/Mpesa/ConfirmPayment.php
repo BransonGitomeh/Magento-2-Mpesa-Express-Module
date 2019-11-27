@@ -56,8 +56,10 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         //Fetch the record from the stk table using the merchant_request_id
         
         $record  = $this->_stkpush->load($m_id, 'merchant_request_id');
-
-        switch($record->getResultCode()){
+        
+        if(!empty($record->getResultDesc()){
+            
+          switch($record->getResultCode()){
 
             case(0):
 
@@ -68,7 +70,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $response = json_encode([
             
             'success'        => $success,
-            'stk_resultCode' => $code,
+            'code' => $code,
             'message'        => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
@@ -90,8 +92,8 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $response = json_encode([
             
             'success'        => $success,
-            'stk_resultCode' => $code,
-            'message'    => $message,
+            'code' => $code,
+            'message'        => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
             'ref'            => $ref,
@@ -111,7 +113,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $response = json_encode([
             
             'success'        => $success,
-            'stk_resultCode' => $code,
+            'code' => $code,
             'message'    => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
@@ -131,7 +133,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $response = json_encode([
             
             'success'        => $success,
-            'stk_resultCode' => $code,
+            'code' => $code,
             'message'    => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
@@ -153,7 +155,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $response = json_encode([
             
             'success'        => $success,
-            'stk_resultCode' => $code,
+            'code' => $code,
             'message'    => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
@@ -173,7 +175,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $response = json_encode([
             
             'success'        => $success,
-            'stk_resultCode' => $code,
+            'code' => $code,
             'message'    => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
@@ -193,8 +195,8 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $response = json_encode([
             
             'success'        => $success,
-            'stk_resultCode' => $code,
-            'message'    => $message,
+            'code'           => $code,
+            'message'        => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
             'ref'            => $ref,
@@ -204,18 +206,27 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
              ]);
                 break;
         }
-        
-        //Update payment Status
+            $record->setStatus(1);
+            $record->save();
+            
+        }else{
+            
+
+            $response = json_encode(['success' => $success,
+                                     'code'    => $code,
+                                     'message' => $message]);
+            
+            //Update payment Status
             $record->setStatus(1);
             $record->save();
 
-        // if (!empty($record->getResultDesc())) {
-        //     $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
-        //     !empty($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message = 'Waiting for transaction';
-        //     $record->setStatus(1);
-        //     $record->save();
-        //     $success = true;
-        // }
+            // if (!empty($record->getResultDesc())) {
+            //     $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
+            //     !empty($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message = 'Waiting for transaction';
+            //     $record->setStatus(1);
+            //     $record->save();
+            //     $success = true;
+            // }
         
         
         echo $response;
