@@ -207,8 +207,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
            break;
           }
          
-        }else{
-        
+        }
             $response = json_encode(
                 [
                  'success'   => false,
@@ -218,10 +217,6 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
  
             $record->setStatus(1);
             $record->save();
-
-        
-       
-      }
 
 
       echo $response;
