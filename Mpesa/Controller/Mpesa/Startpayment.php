@@ -40,6 +40,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
                 'success' => false,
                 'message' => 'Please provide a valid Safaricom phone number'
             ]);
+            exit;
         }
 
         $token = $this->_mpesahelper->generateToken();
