@@ -46,7 +46,7 @@ define([
           $("#paybillButton").attr("disabled", "disabled");
         },
         success: function(msg) {
-        //   console.log(msg);
+          console.table(msg);
           var obj = JSON.parse(msg);
           $(".loader").show();
 
@@ -66,8 +66,9 @@ define([
                   data: { m_id: obj.m_id, c_id: obj.c_id },
                   type: "POST",
                   success: function(msg) {
+                    console.info(msg);
                     var objn = JSON.parse(msg);
-                    // console.log(msg);
+                    console.table(objn);
 
                     $(".return-message-paybill")
                       .removeClass("pay_false")
@@ -85,7 +86,7 @@ define([
                       clearInterval(myVar);
                     } else {
                       if (objn.code !== null) {
-                        // alert(objn.message);
+                        console.info(objn.message);
                         $(".return-message-paybill")
                           .removeClass("pay_true")
                           .addClass("pay_false")
