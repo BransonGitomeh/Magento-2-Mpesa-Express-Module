@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: user
@@ -18,8 +19,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
         \Magento\Checkout\Model\Cart $cart,
         \Safaricom\Mpesa\Helper\Data $mpesahelper,
         \Safaricom\Mpesa\Model\Stkpush $stkpush
-    )
-    {
+    ) {
         $this->_stkpush = $stkpush;
         $this->_mpesa = $mpesa;
         $this->cart = $cart;
@@ -31,7 +31,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         $phone = $this->getRequest()->getParam('phone');
-       // $phone = '254720108418';
+        // $phone = '254720108418';
 
         $token = $this->_mpesahelper->generateToken();
         $url = 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
@@ -39,7 +39,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
         $url = $this->_mpesahelper->getGeneralConfig('mpesa_request_url');
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json','Authorization:Bearer '.$token)); //setting custom header
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization:Bearer ' . $token)); //setting custom header
 
         $passkey = $this->_mpesahelper->getGeneralConfig('passkey');
         $paybill = $this->_mpesahelper->getGeneralConfig('my_paybill');
@@ -60,10 +60,10 @@ class Startpayment extends \Magento\Framework\App\Action\Action
         $curl_post_data = array(
             //Fill in the request parameters with valid values
             'BusinessShortCode' => $paybill,
-            'Password' => base64_encode($paybill.$passkey.$timestamp),
+            'Password' => base64_encode($paybill . $passkey . $timestamp),
             'Timestamp' => $timestamp,
             'TransactionType' => 'CustomerPayBillOnline',
-            'Amount' => number_format($amount,0, '.', ''),
+            'Amount' => number_format($amount, 0, '.', ''),
             'PartyA' =>  $this->_mpesahelper->formatPhone($phone),
             'PartyB' => $paybill,
             'PhoneNumber' => $this->_mpesahelper->formatPhone($phone),
@@ -80,16 +80,13 @@ class Startpayment extends \Magento\Framework\App\Action\Action
 
         $curl_response = curl_exec($curl);
 
-        $json = json_decode($curl_response,true);
-        if(isset($json['errorCode']))
-        {
-            echo json_encode(['success'=>false,'message'=>$json['errorMessage']]);
-        }
-        elseif(isset($json['ResponseCode'])){
+        $json = json_decode($curl_response, true);
+        if (isset($json['errorCode'])) {
+            echo json_encode(['success' => false, 'message' => $json['errorMessage'], 'post' => $data_string]);
+        } elseif (isset($json['ResponseCode'])) {
             //return json_encode(['success'=>true,'message'=>$json['ResponseDescription']]);
-            $this->_stkpush->setData(['account_id'=>$account_id,'merchant_request_id'=>$json['MerchantRequestID'],'checkout_request_id'=>$json['CheckoutRequestID'],'phone'=>$phone,'customer_id'=>$customerId])->save();
-            echo json_encode(['success'=>true,'message'=>$json['CustomerMessage'],'m_id'=>$json['MerchantRequestID'],'c_id' =>$json['CheckoutRequestID']]);
+            $this->_stkpush->setData(['account_id' => $account_id, 'merchant_request_id' => $json['MerchantRequestID'], 'checkout_request_id' => $json['CheckoutRequestID'], 'phone' => $phone, 'customer_id' => $customerId])->save();
+            echo json_encode(['post' => $data_string, 'success' => true, 'message' => $json['CustomerMessage'], 'm_id' => $json['MerchantRequestID'], 'c_id' => $json['CheckoutRequestID']]);
         }
-
     }
 }
