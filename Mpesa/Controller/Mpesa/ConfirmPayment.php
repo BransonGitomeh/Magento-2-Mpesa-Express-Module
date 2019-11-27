@@ -148,7 +148,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                 case ('SFC_IC0003'):
                     //MPESA operator doesnt exist..
                     $code    = $record->getResultCode();
-                    $message = 'MPESA Operator Doesnt Exist';
+                    $message = 'MPESA number does not exist, please check the provided number';
                     $success = false;
 
                     $response = json_encode([
