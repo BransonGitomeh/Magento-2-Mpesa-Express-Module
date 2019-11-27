@@ -81,7 +81,7 @@ class Stkpushlistener extends \Magento\Framework\App\Action\Action implements Ht
                 $data = ['trans_id'=>$receipt,'callback_time'=>$TransactionDate,'trans_amount'=>$amount,
                     'msisdn'=>$PhoneNumber,'invoice_number'=>$mpesa->getStkId(),'trans_time'=>$TransactionDate,
                     'business_shortcode'=> $this->helper->getGeneralConfig('my_paybill'), 'bill_ref_number'=>$mpesa->getAccountId()];
-                $this->_mpesa->setData($data)->save();
+                $this->_stkpush->setData($data)->save();
             }
 
             echo json_encode([
