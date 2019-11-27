@@ -51,22 +51,6 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         $success = false;
         $message = 'Waiting for transaction';
         
-        // $collection = $this->_stkpush->getCollection()->addFieldToFilter('merchant_request_id',['eq'=>$m_id])
-        //     ->addFieldToFilter('checkout_request_id',['eq'=>$c_id])
-        //     ->addFieldToFilter('result_desc',['neq' => 'NULL']);
-
-        // if($collection)
-        // {
-        //     foreach($collection as $record) {
-        //         !empty($record->getResultCode()) ? $success = true : $success = false;
-        //         $record->getResultCode() ==0 ? $code = 'O' : $code = $record->getResultCode();
-        //         !empty ($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message= 'Waiting for transaction';
-        //         $record->setStatus(1);
-        //         $record->save();
-        //         $success = true;
-        //     }
-        // }
-
         $record = $this->_stkpush->load($m_id, 'merchant_request_id');
         if (!empty($record->getResultDesc())) {
             $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
@@ -75,15 +59,17 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $record->save();
             $success = true;
         }
+        
+        
         echo json_encode([
-            'record' => $record->getResultCode(),
-            'm_id' => $m_id,
-            'c_id' => $c_id,
-            'ref' => $ref,
-            'amount' => $amount,
-            'success' => $success,
-            'message' => $message,
-            'code' => $code
+            
+            'success'        => $success,
+            'stk_resultCode' => $code,
+            'stk_message'    => $message,
+            'm_id'           => $m_id,
+            'c_id'           => $c_id,
+            'ref'            => $ref,
+            'amount'         => $amount
         ]);
     }
 }
