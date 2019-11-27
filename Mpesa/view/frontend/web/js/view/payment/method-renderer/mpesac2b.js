@@ -63,7 +63,7 @@ define([
                   url: url.build(
                     window.checkoutConfig.payment.mpesac2b.paybillWait
                   ),
-                  data: { m_id: obj.m_id, c_id: objcd.c_id },
+                  data: { m_id: obj.m_id, c_id: obj.c_id },
                   type: "POST",
                   success: function(msg) {
                     var objn = JSON.parse(msg);
