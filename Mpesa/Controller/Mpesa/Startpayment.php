@@ -67,7 +67,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
             'PartyA' =>  $this->_mpesahelper->formatPhone($phone),
             'PartyB' => $paybill,
             'PhoneNumber' => $this->_mpesahelper->formatPhone($phone),
-            'CallBackURL' => $this->_url->getUrl('safaricommpesa/mpesa/stkpushlistener'),
+            'CallBackURL' => 'http://8b4f5508.ngrok.io/lipaCallback/magento-push',
             'AccountReference' => $account_id,
             'TransactionDesc' => 'Magento Order'
         );
