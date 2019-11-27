@@ -6,8 +6,9 @@
  * Time: 7:11 PM
  */
 namespace Safaricom\Mpesa\Controller\Mpesa;
+use Magento\Framework\App\Action\HttpPostActionInterface as HttpPostActionInterface;
 
-class Stkpushlistener extends \Magento\Framework\App\Action\Action
+class Stkpushlistener extends \Magento\Framework\App\Action\Action implements HttpPostActionInterface
 {
 
     public function __construct(
