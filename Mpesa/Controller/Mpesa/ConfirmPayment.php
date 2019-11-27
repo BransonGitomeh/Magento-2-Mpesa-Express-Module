@@ -170,7 +170,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                     $response = json_encode([
                         'success'        => $success,
                         'code'           => $code,
-                        'message'        => $message,
+                        'message'        => $message + ' : ' + $code,
                         'm_id'           => $m_id,
                         'c_id'           => $c_id,
                         'ref'            => $ref,
