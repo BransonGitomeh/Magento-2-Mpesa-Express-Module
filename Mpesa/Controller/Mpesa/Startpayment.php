@@ -67,7 +67,7 @@ class Startpayment extends \Magento\Framework\App\Action\Action
             'PartyA' =>  $this->_mpesahelper->formatPhone($phone),
             'PartyB' => $paybill,
             'PhoneNumber' => $this->_mpesahelper->formatPhone($phone),
-            'CallBackURL' => 'http://8b4f5508.ngrok.io/lipaCallback/magento-push',
+            'CallBackURL' => 'http://e99ade92.ngrok.io/lipaCallback/magento-push',
             'AccountReference' => $account_id,
             'TransactionDesc' => 'Magento Order'
         );
@@ -82,11 +82,21 @@ class Startpayment extends \Magento\Framework\App\Action\Action
 
         $json = json_decode($curl_response, true);
         if (isset($json['errorCode'])) {
-            echo json_encode(['success' => false, 'message' => $json['errorMessage'], 'post' => $data_string]);
+            echo json_encode([
+                'success' => false,
+                'message' => $json['errorMessage'],
+                'post' => $data_string
+            ]);
         } elseif (isset($json['ResponseCode'])) {
             //return json_encode(['success'=>true,'message'=>$json['ResponseDescription']]);
             $this->_stkpush->setData(['account_id' => $account_id, 'merchant_request_id' => $json['MerchantRequestID'], 'checkout_request_id' => $json['CheckoutRequestID'], 'phone' => $phone, 'customer_id' => $customerId])->save();
-            echo json_encode(['post' => $data_string, 'success' => true, 'message' => $json['CustomerMessage'], 'm_id' => $json['MerchantRequestID'], 'c_id' => $json['CheckoutRequestID']]);
+            echo json_encode([
+                'post' => $data_string,
+                'success' => true,
+                'message' => $json['CustomerMessage'],
+                'm_id' => $json['MerchantRequestID'],
+                'c_id' => $json['CheckoutRequestID']
+            ]);
         }
     }
 }
