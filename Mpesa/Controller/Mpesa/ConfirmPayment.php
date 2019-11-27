@@ -50,7 +50,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         $code = null;
         $success = false;
         $message = 'Waiting for transaction';
-        /*
+        
         $collection = $this->_stkpush->getCollection()->addFieldToFilter('merchant_request_id',['eq'=>$m_id])
             ->addFieldToFilter('checkout_request_id',['eq'=>$c_id])
             ->addFieldToFilter('result_desc',['neq' => 'NULL']);
@@ -66,15 +66,15 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                 $success = true;
             }
         }
-*/
-        $record = $this->_stkpush->load($m_id, 'merchant_request_id');
-        if (!empty($record->getResultDesc())) {
-            $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
-            !empty($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message = 'Waiting for transaction';
-            $record->setStatus(1);
-            $record->save();
-            $success = true;
-        }
+
+        // $record = $this->_stkpush->load($m_id, 'merchant_request_id');
+        // if (!empty($record->getResultDesc())) {
+        //     $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
+        //     !empty($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message = 'Waiting for transaction';
+        //     $record->setStatus(1);
+        //     $record->save();
+        //     $success = true;
+        // }
         echo json_encode([
             'record' => $record,
             'm_id' => $m_id,
