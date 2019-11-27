@@ -84,8 +84,8 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
 
             //Balance Insufficient
             $code    = $record->getResultCode();
-            $message = 'MPESA Balance is not Enough to Pay KES'. $amount;
-            $success = false;
+            $message = 'MPESA Balance is not Enough to Pay KES '. $amount;
+            $success = true;
             //construct the response
             $response = json_encode([
             
@@ -106,7 +106,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             //Invalid PIN
             $code    = $record->getResultCode();
             $message = 'MPESA PIN Entered is Invalid';
-            $success = false;
+            $success = true;
             //construct the response
             $response = json_encode([
             
@@ -126,7 +126,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             //Timeout
             $code    = $record->getResultCode();
             $message = 'Timeout Occured. Please Retry Transaction Again';
-            $success = false;
+            $success = true;
             //construct the response
             $response = json_encode([
             
@@ -148,7 +148,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
 
             $code    = $record->getResultCode();
             $message = 'MPESA PIN Entered is Invalid';
-            $success = false;
+            $success = true;
             //construct the response
             $response = json_encode([
             
