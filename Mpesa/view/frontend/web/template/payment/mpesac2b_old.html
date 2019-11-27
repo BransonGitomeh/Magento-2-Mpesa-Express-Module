@@ -34,7 +34,7 @@
                 4. Enter Account no. <strong><span data-bind=" text:getPayaccountNo() "></span></strong><br/>
                 5. Enter the Amount Ksh. <strong><span data-bind=" text:getOrderTotal() "></span></strong>  <br/>
                 6. Enter your M-PESA PIN and Send <br/>
-                After you receive the confirmation SMS, Click on Place Order
+                After you receive the confirmation SMS, Click on Make Payment
             </div>
             <!-- /ko -->
 
@@ -63,12 +63,12 @@
                         type="submit"
                         data-bind="
                         click: validatePayment,
-                        attr: {title: $t('Place Order')},
+                        attr: {title: $t('Make Payment')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
                         enable: (getCode() == isChecked())
                         "
                         disabled>
-                    <span data-bind="i18n: 'Place Order'"></span>
+                    <span data-bind="i18n: 'Make Payment'"></span>
                 </button>
             </div>
         </div>

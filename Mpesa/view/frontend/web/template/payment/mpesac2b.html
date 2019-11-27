@@ -57,12 +57,12 @@
                         type="submit"
                         data-bind="
                         click: validatePayment,
-                        attr: {title: $t('Place Order')},
+                        attr: {title: $t('Make Payment')},
                         css: {disabled: !isPlaceOrderActionAllowed()},
                         enable: (getCode() == isChecked())
                         "
                         disabled>
-                    <span data-bind="i18n: 'Place Order'"></span>
+                    <span data-bind="i18n: 'Make Payment'"></span>
                 </button>
             </div>
         </div>
