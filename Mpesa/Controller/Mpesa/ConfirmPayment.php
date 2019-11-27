@@ -147,7 +147,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             //User Cancelled Request
 
             $code    = $record->getResultCode();
-            $message = 'MPESA PIN Entered is Invalid';
+            $message = 'User Cancelled the Request to Pay';
             $success = true;
             //construct the response
             $response = json_encode([
@@ -183,6 +183,26 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
 
              ]);
             break;
+                
+            default:
+                //MPESA operator doesnt exist..
+            $code    = $record->getResultCode();
+            $message = $record->getResultDesc();
+            $success = true;
+            //construct the response
+            $response = json_encode([
+            
+            'success'        => $success,
+            'stk_resultCode' => $code,
+            'message'    => $message,
+            'm_id'           => $m_id,
+            'c_id'           => $c_id,
+            'ref'            => $ref,
+            'amount'         => $amount
+
+
+             ]);
+                break;
         }
         
         //Update payment Status
