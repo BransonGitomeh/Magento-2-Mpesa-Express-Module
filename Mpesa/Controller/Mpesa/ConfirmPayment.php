@@ -76,7 +76,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $record->save();
             $success = true;
         }
-        echo json_encode(['success'=>$success,'message'=>$message,'code'=>$code]);
+        echo json_encode(['record'=>$record, 'success'=>$success,'message'=>$message,'code'=>$code]);
 
     }
 }
