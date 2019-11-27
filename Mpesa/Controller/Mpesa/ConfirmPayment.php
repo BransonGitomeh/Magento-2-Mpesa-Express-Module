@@ -69,7 +69,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             
             'success'        => $success,
             'stk_resultCode' => $code,
-            'stk_message'    => $message,
+            'message'        => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
             'ref'            => $ref,
@@ -91,7 +91,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             
             'success'        => $success,
             'stk_resultCode' => $code,
-            'stk_message'    => $message,
+            'message'    => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
             'ref'            => $ref,
@@ -112,7 +112,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             
             'success'        => $success,
             'stk_resultCode' => $code,
-            'stk_message'    => $message,
+            'message'    => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
             'ref'            => $ref,
@@ -132,7 +132,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             
             'success'        => $success,
             'stk_resultCode' => $code,
-            'stk_message'    => $message,
+            'message'    => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
             'ref'            => $ref,
@@ -154,7 +154,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             
             'success'        => $success,
             'stk_resultCode' => $code,
-            'stk_message'    => $message,
+            'message'    => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
             'ref'            => $ref,
@@ -174,7 +174,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             
             'success'        => $success,
             'stk_resultCode' => $code,
-            'stk_message'    => $message,
+            'message'    => $message,
             'm_id'           => $m_id,
             'c_id'           => $c_id,
             'ref'            => $ref,
