@@ -59,7 +59,7 @@ define(
                                             
                                             if(objn.success == true)
                                             {
-                                                if(objn.code == 'O'){
+                                                if(objn.code == '0'){
                                                     return self.placeOrder();
                                                 }
                                                 else {
