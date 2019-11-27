@@ -84,14 +84,16 @@ define([
                       }
                       clearInterval(myVar);
                     } else {
-                      $(".return-message-paybill")
-                        .removeClass("pay_true")
-                        .addClass("pay_false")
-                        .html(obj.message);
-                      $("#safaricom_phone").removeAttr("disabled");
-                      $("#paybillButton").removeAttr("disabled");
-                      $(".loader").hide();
-                      clearInterval(myVar);
+                      if (objn.code) {
+                        $(".return-message-paybill")
+                          .removeClass("pay_true")
+                          .addClass("pay_false")
+                          .html(obj.message);
+                        $("#safaricom_phone").removeAttr("disabled");
+                        $("#paybillButton").removeAttr("disabled");
+                        $(".loader").hide();
+                        clearInterval(myVar);
+                      }
                     }
                   }
                 });
