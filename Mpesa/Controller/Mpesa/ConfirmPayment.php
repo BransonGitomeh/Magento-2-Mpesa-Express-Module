@@ -183,7 +183,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
                 [
                     'success'   => false,
                     'code'     => null,
-                    'message' => 'Waiting for Transaction Response. Please Wait....'
+                    'message' => 'Please check your device and enter PIN, waiting...'
                 ]
             );
         }
