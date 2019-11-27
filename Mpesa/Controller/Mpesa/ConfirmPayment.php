@@ -42,26 +42,33 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
 
     public function execute()
     {
-        $amount = $this->cart->getQuote()->getGrandTotal();
-        $ref = $this->cart->getQuote()->getId();
+        $amount  = $this->cart->getQuote()->getGrandTotal();
+        $ref     = $this->cart->getQuote()->getId();
 
-        $m_id = $this->getRequest()->getParam('m_id');
-        $c_id = $this->getRequest()->getParam('c_id');
-        $code = null;
+        $m_id    = $this->getRequest()->getParam('m_id');
+        $c_id    = $this->getRequest()->getParam('c_id');
+
+
+        $code    = null;
         $success = false;
-        $message = 'Waiting for transaction';
+        $message = 'Waiting for Transaction Response. Please Wait....';
         
-        $record = $this->_stkpush->load($m_id, 'merchant_request_id');
-        if (!empty($record->getResultDesc())) {
-            $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
-            !empty($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message = 'Waiting for transaction';
+        $record  = $this->_stkpush->load($m_id, 'merchant_request_id');
+
+        switch($record->getResultCode() ){
+
+            case(0):
+
+            $code    = $record->getResultCode();
+            $message = $record->getResultDesc();
+            $success = true;
+
+            //Set the status to success
             $record->setStatus(1);
             $record->save();
-            $success = true;
-        }
-        
-        
-        echo json_encode([
+
+            //construct the response
+            $response = json_encode([
             
             'success'        => $success,
             'stk_resultCode' => $code,
@@ -70,6 +77,152 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             'c_id'           => $c_id,
             'ref'            => $ref,
             'amount'         => $amount
-        ]);
+
+
+             ]); 
+
+            break;
+
+            case(1):
+
+            //Balance Insufficient
+            $code    = $record->getResultCode();
+            $message = 'MPESA Balance is not Enough to Pay KES'. $amount;
+            $success = false;
+
+            //Set the status to success
+            $record->setStatus(0);
+            $record->save();
+
+            //construct the response
+            $response = json_encode([
+            
+            'success'        => $success,
+            'stk_resultCode' => $code,
+            'stk_message'    => $message,
+            'm_id'           => $m_id,
+            'c_id'           => $c_id,
+            'ref'            => $ref,
+            'amount'         => $amount
+
+
+             ]); 
+            break;
+
+            case(2001):
+
+            //Invalid PIN
+            $code    = $record->getResultCode();
+            $message = 'MPESA PIN Entered is Invalid';
+            $success = false;
+
+            //Set the status to success
+            $record->setStatus(0);
+            $record->save();
+
+            //construct the response
+            $response = json_encode([
+            
+            'success'        => $success,
+            'stk_resultCode' => $code,
+            'stk_message'    => $message,
+            'm_id'           => $m_id,
+            'c_id'           => $c_id,
+            'ref'            => $ref,
+            'amount'         => $amount
+
+
+             ]);
+            break;
+
+            case(1037):
+            //Timeout
+            $code    = $record->getResultCode();
+            $message = 'Timeout Occured. Please Retry Transaction Again';
+            $success = false;
+
+            //Set the status to success
+            $record->setStatus(0);
+            $record->save();
+
+            //construct the response
+            $response = json_encode([
+            
+            'success'        => $success,
+            'stk_resultCode' => $code,
+            'stk_message'    => $message,
+            'm_id'           => $m_id,
+            'c_id'           => $c_id,
+            'ref'            => $ref,
+            'amount'         => $amount
+
+
+             ]);
+
+            break;
+
+            case(1032):
+            //User Cancelled Request
+
+            $code    = $record->getResultCode();
+            $message = 'MPESA PIN Entered is Invalid';
+            $success = false;
+
+            //Set the status to success
+            $record->setStatus(0);
+            $record->save();
+
+            //construct the response
+            $response = json_encode([
+            
+            'success'        => $success,
+            'stk_resultCode' => $code,
+            'stk_message'    => $message,
+            'm_id'           => $m_id,
+            'c_id'           => $c_id,
+            'ref'            => $ref,
+            'amount'         => $amount
+
+
+             ]);
+            break;
+
+            case('SFC_IC0003'):
+            //MPESA operator doesnt exist..
+            $code    = $record->getResultCode();
+            $message = 'MPESA Operator Doesnt Exist';
+            $success = true;
+
+            //Set the status to success
+            $record->setStatus(0);
+            $record->save();
+
+            //construct the response
+            $response = json_encode([
+            
+            'success'        => $success,
+            'stk_resultCode' => $code,
+            'stk_message'    => $message,
+            'm_id'           => $m_id,
+            'c_id'           => $c_id,
+            'ref'            => $ref,
+            'amount'         => $amount
+
+
+             ]);
+            break;
+        }
+
+
+        // if (!empty($record->getResultDesc())) {
+        //     $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
+        //     !empty($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message = 'Waiting for transaction';
+        //     $record->setStatus(1);
+        //     $record->save();
+        //     $success = true;
+        // }
+        
+        
+        echo $response;
     }
 }
