@@ -49,9 +49,9 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         $c_id    = $this->getRequest()->getParam('c_id');
 
         //As we wait for the CallBack Response we Send a default value
-        $code    = null;
-        $success = false;
-        $message = 'Waiting for Transaction Response. Please Wait....';
+        //$code    = null;
+        //$success = false;
+        //$message = 'Waiting for Transaction Response. Please Wait....';
         
         //Fetch the record from the stk table using the merchant_request_id
         
@@ -204,31 +204,25 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
 
 
              ]);
-                break;
-        }
-            $record->setStatus(1);
-            $record->save();
-            
+           break;
+          }
+         
         }else{
-            
-
-            $response = json_encode(['success' => $success,
-                                     'code'    => $code,
-                                     'message' => $message]);
-            
-            //Update payment Status
+        
+            $response = json_encode(
+                [
+                 'success'   => false,
+                  'code'     => null,
+                   'message' => 'Waiting for Transaction Response. Please Wait....'
+                ]);
+ 
             $record->setStatus(1);
             $record->save();
 
-            // if (!empty($record->getResultDesc())) {
-            //     $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
-            //     !empty($record->getResultDesc()) ?  $message = $record->getResultDesc() : $message = 'Waiting for transaction';
-            //     $record->setStatus(1);
-            //     $record->save();
-            //     $success = true;
-            // }
         
-        
-        echo $response;
-    }
+       
+      }
+
+
+      echo $response;
 }
