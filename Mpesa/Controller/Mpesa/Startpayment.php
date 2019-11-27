@@ -98,6 +98,11 @@ class Startpayment extends \Magento\Framework\App\Action\Action
             if($json['errorCode'] == '500.001.1001'){
                 $message = 'Please enter a valid safaricom number, ie 07__ ___ ___';
             }
+
+            
+            if($json['errorCode'] == '400.002.02'){
+                $message = 'Please enter a valid safaricom number, ie 07__ ___ ___';
+            }
             
             echo json_encode([
                 'success' => false,
