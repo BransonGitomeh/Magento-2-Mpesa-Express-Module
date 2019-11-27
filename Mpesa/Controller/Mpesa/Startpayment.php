@@ -85,10 +85,18 @@ class Startpayment extends \Magento\Framework\App\Action\Action
 
         $json = json_decode($curl_response, true);
         if (isset($json['errorCode'])) {
+            $message = 'Something wrong happened, please try again';
+            
+
+            if($json['errorCode'] == '500.001.1001'){
+                $message = 'Please enter a valid safaricom number, ie 07__ ___ ___';
+            }
+            
             echo json_encode([
                 'success' => false,
-                'message' => $json['errorMessage'],
-                // 'post' => $data_string
+                'message' => $message,
+                'post' => $data_string,
+                'res' => $json
             ]);
         } elseif (isset($json['ResponseCode'])) {
             //return json_encode(['success'=>true,'message'=>$json['ResponseDescription']]);
