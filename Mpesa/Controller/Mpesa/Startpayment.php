@@ -80,9 +80,6 @@ class Startpayment extends \Magento\Framework\App\Action\Action
 
         $curl_response = curl_exec($curl);
 
-        echo $curl_response;
-        exit;
-
         $json = json_decode($curl_response, true);
         if (isset($json['errorCode'])) {
             $message = 'Something wrong happened, please try again';
