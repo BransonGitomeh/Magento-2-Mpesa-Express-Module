@@ -46,7 +46,7 @@ define([
           $("#paybillButton").attr("disabled", "disabled");
         },
         success: function(msg) {
-          console.log(msg);
+        //   console.log(msg);
           var obj = JSON.parse(msg);
           $(".loader").show();
 
@@ -67,7 +67,7 @@ define([
                   type: "POST",
                   success: function(msg) {
                     var objn = JSON.parse(msg);
-                    console.log(msg);
+                    // console.log(msg);
 
                     $(".return-message-paybill")
                       .removeClass("pay_false")
