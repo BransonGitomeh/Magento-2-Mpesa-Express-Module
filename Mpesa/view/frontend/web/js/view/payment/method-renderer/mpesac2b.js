@@ -85,11 +85,11 @@ define([
                       clearInterval(myVar);
                     } else {
                       if (objn.code !== null) {
-                        alert(obj.message);
+                        // alert(objn.message);
                         $(".return-message-paybill")
                           .removeClass("pay_true")
                           .addClass("pay_false")
-                          .html(obj.message);
+                          .html(objn.message);
                         $("#safaricom_phone").removeAttr("disabled");
                         $("#paybillButton").removeAttr("disabled");
                         $(".loader").hide();
