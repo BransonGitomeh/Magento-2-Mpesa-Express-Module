@@ -84,7 +84,7 @@ define([
                       }
                       clearInterval(myVar);
                     } else {
-                      if (objn.code) {
+                      if (objn.code !== null) {
                         $(".return-message-paybill")
                           .removeClass("pay_true")
                           .addClass("pay_false")
