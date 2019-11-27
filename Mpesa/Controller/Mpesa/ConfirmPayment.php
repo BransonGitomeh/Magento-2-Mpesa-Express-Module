@@ -55,7 +55,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         
         $record  = $this->_stkpush->load($m_id, 'merchant_request_id');
 
-        switch($record->getResultCode() ){
+        switch($record->getResultCode()){
 
             case(0):
 
@@ -142,7 +142,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $success = false;
 
             //Set the status to success
-            $record->setStatus(0);
+            $record->setStatus(1);
             $record->save();
 
             //construct the response
@@ -169,7 +169,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $success = false;
 
             //Set the status to success
-            $record->setStatus(0);
+            $record->setStatus(1);
             $record->save();
 
             //construct the response
@@ -194,7 +194,7 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $success = true;
 
             //Set the status to success
-            $record->setStatus(0);
+            $record->setStatus(1);
             $record->save();
 
             //construct the response
