@@ -48,10 +48,12 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
         $m_id    = $this->getRequest()->getParam('m_id');
         $c_id    = $this->getRequest()->getParam('c_id');
 
-
+        //As we wait for the CallBack Response we Send a default value
         $code    = null;
         $success = false;
         $message = 'Waiting for Transaction Response. Please Wait....';
+        
+        //Fetch the record from the stk table using the merchant_request_id
         
         $record  = $this->_stkpush->load($m_id, 'merchant_request_id');
 
@@ -62,11 +64,6 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $code    = $record->getResultCode();
             $message = $record->getResultDesc();
             $success = true;
-
-            //Set the status to success
-            $record->setStatus(1);
-            $record->save();
-
             //construct the response
             $response = json_encode([
             
@@ -89,11 +86,6 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $code    = $record->getResultCode();
             $message = 'MPESA Balance is not Enough to Pay KES'. $amount;
             $success = false;
-
-            //Set the status to success
-            $record->setStatus(0);
-            $record->save();
-
             //construct the response
             $response = json_encode([
             
@@ -115,11 +107,6 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $code    = $record->getResultCode();
             $message = 'MPESA PIN Entered is Invalid';
             $success = false;
-
-            //Set the status to success
-            $record->setStatus(0);
-            $record->save();
-
             //construct the response
             $response = json_encode([
             
@@ -140,11 +127,6 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $code    = $record->getResultCode();
             $message = 'Timeout Occured. Please Retry Transaction Again';
             $success = false;
-
-            //Set the status to success
-            $record->setStatus(1);
-            $record->save();
-
             //construct the response
             $response = json_encode([
             
@@ -167,11 +149,6 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $code    = $record->getResultCode();
             $message = 'MPESA PIN Entered is Invalid';
             $success = false;
-
-            //Set the status to success
-            $record->setStatus(1);
-            $record->save();
-
             //construct the response
             $response = json_encode([
             
@@ -192,11 +169,6 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
             $code    = $record->getResultCode();
             $message = 'MPESA Operator Doesnt Exist';
             $success = true;
-
-            //Set the status to success
-            $record->setStatus(1);
-            $record->save();
-
             //construct the response
             $response = json_encode([
             
@@ -212,7 +184,10 @@ class ConfirmPayment extends \Magento\Framework\App\Action\Action
              ]);
             break;
         }
-
+        
+        //Update payment Status
+            $record->setStatus(1);
+            $record->save();
 
         // if (!empty($record->getResultDesc())) {
         //     $record->getResultCode() == 0 ? $code = 'O' : $code = $record->getResultCode();
