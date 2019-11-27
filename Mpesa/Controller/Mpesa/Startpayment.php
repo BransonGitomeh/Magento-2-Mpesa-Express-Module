@@ -80,12 +80,15 @@ class Startpayment extends \Magento\Framework\App\Action\Action
 
         $curl_response = curl_exec($curl);
 
+        echo $curl_response;
+        exit;
+
         $json = json_decode($curl_response, true);
         if (isset($json['errorCode'])) {
             echo json_encode([
                 'success' => false,
                 'message' => $json['errorMessage'],
-                'post' => $data_string
+                // 'post' => $data_string
             ]);
         } elseif (isset($json['ResponseCode'])) {
             //return json_encode(['success'=>true,'message'=>$json['ResponseDescription']]);
