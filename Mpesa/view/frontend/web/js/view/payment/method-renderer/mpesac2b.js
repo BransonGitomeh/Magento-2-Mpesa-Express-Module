@@ -91,10 +91,11 @@ define([
                       $("#safaricom_phone").removeAttr("disabled");
                       $("#paybillButton").removeAttr("disabled");
                       $(".loader").hide();
+                      clearInterval(myVar);
                     }
                   }
                 });
-              }, 3000);
+              }, 1000);
               break;
 
             case false:
