@@ -6,9 +6,12 @@
  * Time: 7:11 PM
  */
 namespace Safaricom\Mpesa\Controller\Mpesa;
-use Magento\Framework\App\Action\HttpPostActionInterface as HttpPostActionInterface;
 
-class Stkpushlistener extends \Magento\Framework\App\Action\Action implements HttpPostActionInterface
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
+
+class Stkpushlistener extends \Magento\Framework\App\Action\Action implements CsrfAwareActionInterface
 {
 
     public function __construct(
@@ -24,9 +27,21 @@ class Stkpushlistener extends \Magento\Framework\App\Action\Action implements Ht
         parent::__construct($context);
     }
 
+    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    {
+        return null;
+    }
+
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
+    }
+
+
 
     public function execute()
     {
+
         $data = file_get_contents('php://input');
 
         $writer = new \Zend\Log\Writer\Stream(BP . '/var/log/stkpush.log');
@@ -40,30 +55,14 @@ class Stkpushlistener extends \Magento\Framework\App\Action\Action implements Ht
         $ResultDesc = $data["Body"]["stkCallback"]["ResultDesc"];
         $MerchantRequestID = $data["Body"]["stkCallback"]["MerchantRequestID"];
         $CheckoutRequestID = $data["Body"]["stkCallback"]["CheckoutRequestID"];
-
         
-        /*
-        $collection = $this->_stkpush->getCollection()->addFieldToFilter('merchant_request_id',['eq'=>$MerchantRequestID])
-            ->addFieldToFilter('checkout_request_id',['eq'=>$CheckoutRequestID]);
-        if($collection)
-        {
-            foreach($collection as $mpesa)
-            {
-
-                //$mpesa->setResultCode($ResultCode);
-                //$mpesa->setResultDesc($ResultDesc);
-                //$mpesa->save();
-
-            }
-            $collection->save();
-        }
-        */
         $mpesa = $this->_stkpush->create()->load($MerchantRequestID,'merchant_request_id');
         $mpesa->setResultCode($ResultCode);
         $mpesa->setResultDesc($ResultDesc);
         $mpesa->save();
 
-        if($ResultCode == 0){
+        if($ResultCode == 0)
+        {
             $items = $data["Body"]["stkCallback"]["CallbackMetadata"]['Item'];
 
             if(is_array($items))
@@ -81,7 +80,7 @@ class Stkpushlistener extends \Magento\Framework\App\Action\Action implements Ht
                 $data = ['trans_id'=>$receipt,'callback_time'=>$TransactionDate,'trans_amount'=>$amount,
                     'msisdn'=>$PhoneNumber,'invoice_number'=>$mpesa->getStkId(),'trans_time'=>$TransactionDate,
                     'business_shortcode'=> $this->helper->getGeneralConfig('my_paybill'), 'bill_ref_number'=>$mpesa->getAccountId()];
-                $this->_stkpush->setData($data)->save();
+                $this->_mpesa->setData($data)->save();
             }
 
             echo json_encode([
@@ -91,7 +90,8 @@ class Stkpushlistener extends \Magento\Framework\App\Action\Action implements Ht
                 'MerchantRequestID' => $MerchantRequestID,
                 'CheckoutRequestID' => $CheckoutRequestID
             ]);
-        } else {
+        } else 
+        {
             echo json_encode([
                 'data' => $data,
                 'success' => false,
@@ -100,6 +100,7 @@ class Stkpushlistener extends \Magento\Framework\App\Action\Action implements Ht
                 'CheckoutRequestID' => $CheckoutRequestID
             ]);
         }
-    }
 
+    }
 }
+
